@@ -5,7 +5,7 @@ import { Presentation } from '@/lib/types'
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params
-    const presentation = loadPresentation(id)
+    const presentation = await loadPresentation(id)
     if (!presentation) {
       return NextResponse.json({ error: 'Not found' }, { status: 404 })
     }
@@ -19,11 +19,11 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
   try {
     const { id } = await params
     const body: Presentation = await req.json()
-    const existing = loadPresentation(id)
+    const existing = await loadPresentation(id)
     if (!existing) {
       return NextResponse.json({ error: 'Not found' }, { status: 404 })
     }
-    const updated = savePresentation({ ...body, id, createdAt: existing.createdAt })
+    const updated = await savePresentation({ ...body, id, createdAt: existing.createdAt })
     return NextResponse.json(updated)
   } catch (e) {
     return NextResponse.json({ error: String(e) }, { status: 500 })
@@ -33,7 +33,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
 export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params
-    const ok = deletePresentation(id)
+    const ok = await deletePresentation(id)
     if (!ok) {
       return NextResponse.json({ error: 'Not found' }, { status: 404 })
     }

@@ -4,7 +4,7 @@ import { Presentation } from '@/lib/types'
 
 export async function GET() {
   try {
-    const presentations = listPresentations()
+    const presentations = await listPresentations()
     return NextResponse.json(presentations)
   } catch (e) {
     return NextResponse.json({ error: String(e) }, { status: 500 })
@@ -14,7 +14,7 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const body: Presentation = await req.json()
-    const saved = savePresentation(body)
+    const saved = await savePresentation(body)
     return NextResponse.json(saved, { status: 201 })
   } catch (e) {
     return NextResponse.json({ error: String(e) }, { status: 500 })
